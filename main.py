@@ -5,13 +5,6 @@ Created on Sun Aug 28 19:32:17 2022
 @author: Ziddane
 """
 
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
-
 import pickle as pkl
 import numpy as np
 from PyQt5.QtWidgets import *
@@ -35,14 +28,7 @@ def new_alert(title):
     alert.setText(title + " Task Created")
     alert.exec()
     
-"""
-class task_popup(QDialog):
-    
-    def __init__(self):
-        super(UI, self).__init__()    
-        uic.loadUi("task popout.ui", self)
-        
-"""
+
 
 class CustomDialog(QDialog):
     def __init__(self, task_num):
@@ -57,26 +43,21 @@ class CustomDialog(QDialog):
         self.desc = self.findChild(QLabel, "description_box")
         self.desc.setText(task_arr[self.task_num][1])
         self.date = self.findChild(QLabel, "date")
-        self.date.setText(datetime.fromTimeStamp(task_arr[self.task_num][2]))
+        epoch_time = task_arr[self.task_num][2]
+        print(epoch_time[0])
+        string_epoch = ""
+        for i in range(0, 10):
+            string_epoch += epoch_time[i]
+        date = datetime.datetime.fromtimestamp(int(string_epoch)+21600)  
+        datetime_str = date.strftime( "%Y - %m - %d")  
+
+        self.date.setText(str(datetime_str))
         
         self.button = self.findChild(QPushButton, "complete_button")
         self.button.clicked.connect(lambda: self.complete_task(self.task_num))
         
     def complete_task(self, task_num):
         task_arr[self.task_num][0] = ""
-        """
-        QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
-        self.task_num = task_num
-        self.buttonBox = QDialogButtonBox(QBtn)
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
-        
-        self.layout = QVBoxLayout()
-        message = QLabel(task_arr[self.task_num][1])
-        self.layout.addWidget(message)
-        self.layout.addWidget(self.buttonBox)
-        self.setLayout(self.layout)
-        """
 
 class UI(QDialog):
     
@@ -213,41 +194,3 @@ app = QApplication(sys.argv)
 UIWindow = UI()
 UIWindow.show()
 app.exec_()
-
-
-"""
-if __name__ == '__main__':
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    window = UI()
-    window.show()
-    sys.exit(app.exec_())
-    """
-
-"""
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication
-import sys
-
-app = QApplication([])
-app.setStyle('Fusion')
-window = QWidget()
-layout = QVBoxLayout()
-layout.addWidget(QPushButton('Top'))
-layout.addWidget(QPushButton('sdfgsd'))
-set_reminder_button = QPushButton('Set Reminder?')
-
-def set_reminder():
-    alert = QMessageBox()
-    alert.setText("Reminder Set!")
-    alert.exec()
-        
-set_reminder_button.clicked.connect(set_reminder)
-set_reminder_button.show()
-window.setLayout(layout)
-window.show()
-app.exec()
-"""
